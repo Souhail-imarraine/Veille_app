@@ -1,72 +1,77 @@
 <?php
-session_start();
-require_once __DIR__ . "/../Models/UserModel.php";
+require_once __DIR__.'/../core/BaseController.php';
+require_once __DIR__.'/../models/User.php';
 
-class AuthController {
-    private $userModel;
+class AuthController extends BaseController {
+
+    private User $userModel;
 
     public function __construct() {
         $this->userModel = new User();
     }
 
     public function register() {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $nom = trim($_POST["nom"]);
-            $prenom = trim($_POST["prenom"]);
-            $email = filter_var(trim($_POST["email"]), FILTER_VALIDATE_EMAIL);
-            $password = $_POST["password"];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nom = htmlspecialchars($_POST['nom']) ?? '';
+            $prenom = htmlspecialchars($_POST['prenom']) ?? '';
+            $email = htmlspecialchars($_POST['email']) ?? '';
+            $password = htmlspecialchars($_POST['password']) ?? '';
+            $role = 'etudiant';
 
-            $errors = [];
-            if (empty($nom)) $errors[] = "Le nom est requis";
-            if (empty($prenom)) $errors[] = "Le prénom est requis";
-            if (!$email) $errors[] = "Email invalide";
-            if (strlen($password) < 6) $errors[] = "Le mot de passe doit contenir au moins 6 caractères";
 
-            if (empty($errors)) {
-                if ($this->userModel->register($nom, $prenom, $email, $password)) {
-                    $_SESSION['success'] = "Inscription réussie! Vous pouvez maintenant vous connecter.";
-                    header("Location: /Veille_app/public/login");
-                    exit();
-                } else {
-                    $errors[] = "L'inscription a échoué. Veuillez réessayer.";
-                }
-            }
-            
-            $_SESSION['errors'] = $errors;
-            require __DIR__ . "/../views/auth/register.php";
-        } else {
-            require __DIR__ . "/../views/auth/register.php";
-        }
-    }
-
-    public function login() {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $email = $_POST["email"];
-            $password = $_POST["password"];
-
-            if (empty($email) || empty($password)) {
-                $_SESSION['errors'] = ["Tous les champs sont requis"];
-                require __DIR__ . "/../views/auth/login.php";
+            // Basic validation
+            if (empty($nom) || empty($prenom) || empty($email) || empty($password)) {
+                $this->render('register', ['error' => 'Tous les champs sont obligatoires']);
                 return;
             }
 
-            $user = $this->userModel->login($email, $password);
-            if ($user) {
-                $_SESSION["user"] = $user;
-                header("Location: /Veille_app/public/dashboard");
-                exit();
-            } else {
-                $_SESSION['errors'] = ["Email ou mot de passe incorrect"];
-                require __DIR__ . "/../views/auth/login.php";
+            if ($this->userModel->findByEmail($email)) {
+                $this->render('register', ['error' => 'Cet email est déjà utilisé']);
+                return;
             }
-        } else {
-            require __DIR__ . "/../views/auth/login.php";
+            
+            if ($this->userModel->create($nom, $prenom, $email, $password, $role)) {
+                header('Location: /login');
+                exit;
+            } else {
+                $this->render('register', ['error' => 'Erreur lors de l\'inscription']);
+            }
         }
+
+        $this->render('register');
+    }
+
+    public function login() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'] ?? '';
+            $password = $_POST['password'] ?? '';
+
+            $user = $this->userModel->verifyLogin($email, $password);
+            
+            if ($user) {
+                if ($user['statut'] !== 'approuvé') {
+                    $this->render('login', ['error' => 'Votre compte est en attente d\'approbation']);
+                    return;
+                }
+
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['user_role'] = $user['role'];
+                $_SESSION['user_nom'] = $user['nom'];
+                $_SESSION['user_prenom'] = $user['prenom'];
+                
+                header('Location: /dashboard');
+                exit;
+            } else {
+                $this->render('login', ['error' => 'Email ou mot de passe incorrect']);
+            }
+        }
+
+        $this->render('login');
     }
 
     public function logout() {
         session_destroy();
-        header("Location: /Veille_app/public/login");
-        exit();
+        header('Location: /');
+        exit;
     }
 }

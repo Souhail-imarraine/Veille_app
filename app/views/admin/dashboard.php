@@ -1,254 +1,163 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Administrateur | Veille Tech</title>
+    <title>Admin Dashboard - Veille Tech</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Poppins', sans-serif; }
-        .gradient-bg { background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); }
-        .sidebar-item:hover { background: rgba(255, 255, 255, 0.1); }
-    </style>
 </head>
 <body class="bg-gray-50">
-    <div class="flex h-screen">
-        <div class="w-64 bg-gray-900 text-white">
-            <div class="p-4">
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-layer-group text-purple-400 text-2xl"></i>
-                    <span class="text-lg font-bold">VeilleTech Admin</span>
+    <!-- Admin Navigation -->
+    <nav class="bg-primary-700 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-xl font-bold">Admin Dashboard</h1>
+                    <div class="hidden md:flex space-x-4">
+                        <a href="/admin" class="px-3 py-2 text-sm font-medium text-white bg-primary-600 rounded-md">Veilles</a>
+                        <a href="/admin/users" class="px-3 py-2 text-sm font-medium hover:text-primary-100">Utilisateurs</a>
+                        <a href="/admin/settings" class="px-3 py-2 text-sm font-medium hover:text-primary-100">Paramètres</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm">Admin: John Doe</span>
+                    <a href="/logout" class="text-sm hover:text-primary-100">Déconnexion</a>
                 </div>
             </div>
-            <nav class="mt-8">
-                <div class="px-4 py-2 text-xs uppercase text-gray-400 font-semibold">
-                    Menu Principal
-                </div>
-                <a href="#dashboard" class="flex items-center space-x-2 px-6 py-3 text-gray-300 hover:bg-gray-800 sidebar-item">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Tableau de bord</span>
-                </a>
-                <div class="px-4 py-2 mt-4 text-xs uppercase text-gray-400 font-semibold">
-                    Gestion des Sujets
-                </div>
-                <a href="#topics" class="flex items-center space-x-2 px-6 py-3 text-gray-300 hover:bg-gray-800 sidebar-item">
-                    <i class="fas fa-clipboard-check"></i>
-                    <span>Validation des sujets</span>
-                </a>
-                <a href="#assignments" class="flex items-center space-x-2 px-6 py-3 text-gray-300 hover:bg-gray-800 sidebar-item">
-                    <i class="fas fa-users"></i>
-                    <span>Attribution des sujets</span>
-                </a>
-                <div class="px-4 py-2 mt-4 text-xs uppercase text-gray-400 font-semibold">
-                    Gestion des Utilisateurs
-                </div>
-                <a href="#users" class="flex items-center space-x-2 px-6 py-3 text-gray-300 hover:bg-gray-800 sidebar-item">
-                    <i class="fas fa-user-check"></i>
-                    <span>Validation des comptes</span>
-                </a>
-                <a href="#calendar" class="flex items-center space-x-2 px-6 py-3 text-gray-300 hover:bg-gray-800 sidebar-item">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Calendrier</span>
-                </a>
-            </nav>
         </div>
+    </nav>
 
-        <div class="flex-1 overflow-auto">
-            <div class="bg-white shadow-sm">
-                <div class="flex justify-between items-center px-4 md:px-8 py-4">
-                    <div class="flex items-center space-x-4">
-                        <h1 class="text-xl md:text-2xl font-semibold text-gray-800">Tableau de bord</h1>
-                    </div>
-                    <div class="flex items-center space-x-2 md:space-x-4">
-                        <button class="text-gray-500 hover:text-gray-700 relative">
-                            <i class="fas fa-bell text-xl"></i>
-                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">3</span>
-                        </button>
-                        <div class="flex items-center space-x-2">
-                            <span class="hidden md:inline text-gray-700 font-medium">Admin</span>
-                            <img src="https://ui-avatars.com/api/?name=Admin&background=6366f1&color=fff" 
-                                 alt="Admin" class="w-8 h-8 rounded-full">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-4 md:p-8 space-y-6">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <!-- Total Présentations -->
-                    <div class="bg-white rounded-xl shadow-sm p-4 md:p-6">
-                        <div class="flex items-center justify-between mb-2 md:mb-4">
-                            <div class="text-sm font-medium text-gray-500">Présentations</div>
-                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-indigo-100 flex items-center justify-center">
-                                <i class="fas fa-presentation text-indigo-600"></i>
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header with Stats -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-900">Gestion des Veilles</h2>
+            <div class="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-3">
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="p-5">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-amber-100 rounded-md p-3">
+                                <svg class="h-6 w-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
                             </div>
-                        </div>
-                        <div class="text-lg md:text-2xl font-bold text-gray-800">124</div>
-                        <div class="text-xs md:text-sm text-green-500 flex items-center mt-1 md:mt-2">
-                            <i class="fas fa-arrow-up mr-1"></i> +12.5%
-                        </div>
-                    </div>
-
-                    <!-- Étudiants Actifs -->
-                    <div class="bg-white rounded-xl shadow-sm p-4 md:p-6">
-                        <div class="flex items-center justify-between mb-2 md:mb-4">
-                            <div class="text-sm font-medium text-gray-500">Étudiants</div>
-                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-purple-100 flex items-center justify-center">
-                                <i class="fas fa-users text-purple-600"></i>
-                            </div>
-                        </div>
-                        <div class="text-lg md:text-2xl font-bold text-gray-800">85</div>
-                        <div class="text-xs md:text-sm text-green-500 flex items-center mt-1 md:mt-2">
-                            <i class="fas fa-arrow-up mr-1"></i> +5.2%
-                        </div>
-                    </div>
-
-                    <!-- Sujets en Attente -->
-                    <div class="bg-white rounded-xl shadow-sm p-4 md:p-6">
-                        <div class="flex items-center justify-between mb-2 md:mb-4">
-                            <div class="text-sm font-medium text-gray-500">En Attente</div>
-                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-yellow-100 flex items-center justify-center">
-                                <i class="fas fa-clock text-yellow-600"></i>
-                            </div>
-                        </div>
-                        <div class="text-lg md:text-2xl font-bold text-gray-800">12</div>
-                        <div class="text-xs md:text-sm text-yellow-500 flex items-center mt-1 md:mt-2">
-                            <i class="fas fa-clock mr-1"></i> À valider
-                        </div>
-                    </div>
-
-                    <!-- Taux Participation -->
-                    <div class="bg-white rounded-xl shadow-sm p-4 md:p-6">
-                        <div class="flex items-center justify-between mb-2 md:mb-4">
-                            <div class="text-sm font-medium text-gray-500">Participation</div>
-                            <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-green-100 flex items-center justify-center">
-                                <i class="fas fa-chart-pie text-green-600"></i>
-                            </div>
-                        </div>
-                        <div class="text-lg md:text-2xl font-bold text-gray-800">92%</div>
-                        <div class="text-xs md:text-sm text-green-500 flex items-center mt-1 md:mt-2">
-                            <i class="fas fa-arrow-up mr-1"></i> +3.1%
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Recent Activity & Tasks -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Recent Activity -->
-                    <div class="bg-white rounded-xl shadow-sm">
-                        <div class="p-4 md:p-6 border-b border-gray-100">
-                            <h2 class="text-lg font-semibold text-gray-800">Activités Récentes</h2>
-                        </div>
-                        <div class="p-4 md:p-6">
-                            <div class="space-y-4">
-                                <!-- Activity Item -->
-                                <div class="flex items-start space-x-4">
-                                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                                        <i class="fas fa-plus text-blue-600"></i>
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-900">Nouveau sujet ajouté</p>
-                                        <p class="text-sm text-gray-500">Intelligence Artificielle en 2025</p>
-                                        <p class="text-xs text-gray-400 mt-1">Il y a 5 minutes</p>
-                                    </div>
-                                </div>
-
-                                <div class="flex items-start space-x-4">
-                                    <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                                        <i class="fas fa-check text-green-600"></i>
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-900">Présentation validée</p>
-                                        <p class="text-sm text-gray-500">Web Security par Jane Smith</p>
-                                        <p class="text-xs text-gray-400 mt-1">Il y a 15 minutes</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Upcoming Tasks -->
-                    <div class="bg-white rounded-xl shadow-sm">
-                        <div class="p-4 md:p-6 border-b border-gray-100">
-                            <h2 class="text-lg font-semibold text-gray-800">Tâches à Venir</h2>
-                        </div>
-                        <div class="p-4 md:p-6">
-                            <div class="space-y-4">
-                                <!-- Task Item -->
-                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                    <div class="flex items-center space-x-3">
-                                        <input type="checkbox" class="form-checkbox h-5 w-5 text-indigo-600">
-                                        <div>
-                                            <p class="text-sm font-medium text-gray-900">Valider les nouvelles inscriptions</p>
-                                            <p class="text-xs text-gray-500">8 étudiants en attente</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-xs text-red-600 font-medium">Urgent</span>
-                                </div>
-
-                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                    <div class="flex items-center space-x-3">
-                                        <input type="checkbox" class="form-checkbox h-5 w-5 text-indigo-600">
-                                        <div>
-                                            <p class="text-sm font-medium text-gray-900">Planifier les présentations</p>
-                                            <p class="text-xs text-gray-500">Pour la semaine prochaine</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-xs text-yellow-600 font-medium">Cette semaine</span>
-                                </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <dl>
+                                    <dt class="text-sm font-medium text-gray-500 truncate">En attente</dt>
+                                    <dd class="text-lg font-semibold text-gray-900">5</dd>
+                                </dl>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Recent Presentations -->
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-                    <div class="p-4 md:p-6 border-b border-gray-100">
-                        <h2 class="text-lg font-semibold text-gray-800">Présentations Récentes</h2>
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="p-5">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-emerald-100 rounded-md p-3">
+                                <svg class="h-6 w-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <dl>
+                                    <dt class="text-sm font-medium text-gray-500 truncate">Approuvées</dt>
+                                    <dd class="text-lg font-semibold text-gray-900">12</dd>
+                                </dl>
+                            </div>
+                        </div>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th scope="col" class="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Étudiant</th>
-                                    <th scope="col" class="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sujet</th>
-                                    <th scope="col" class="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                                    <th scope="col" class="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <tr>
-                                    <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <img class="h-8 w-8 rounded-full" src="https://ui-avatars.com/api/?name=John+Doe" alt="">
-                                            <div class="ml-3">
-                                                <div class="text-sm font-medium text-gray-900">John Doe</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 md:px-6 py-4">
-                                        <div class="text-sm text-gray-900">Intelligence Artificielle</div>
-                                        <div class="text-xs text-gray-500">Technologies émergentes</div>
-                                    </td>
-                                    <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        04/02/2025
-                                    </td>
-                                    <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                            Complété
-                                        </span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                </div>
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="p-5">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-rose-100 rounded-md p-3">
+                                <svg class="h-6 w-6 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <dl>
+                                    <dt class="text-sm font-medium text-gray-500 truncate">Rejetées</dt>
+                                    <dd class="text-lg font-semibold text-gray-900">3</dd>
+                                </dl>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Filters -->
+        <div class="mb-6 flex justify-between items-center">
+            <div class="flex space-x-4">
+                <select class="bg-white border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700">
+                    <option>Tous les statuts</option>
+                    <option>En attente</option>
+                    <option>Approuvées</option>
+                    <option>Rejetées</option>
+                </select>
+                <input type="text" placeholder="Rechercher..." class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+            </div>
+        </div>
+
+        <!-- Veille Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Your existing article card code here -->
+            <article class="bg-white rounded-lg border border-gray-200 hover:border-primary-600 transition duration-300">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="bg-amber-50 text-amber-700 text-xs px-3 py-1 rounded-full font-medium">En attente</span>
+                        <time class="text-sm text-gray-500 font-medium">15 Mars 2024</time>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3 line-clamp-2">L'Impact de l'IA dans le Développement Logiciel</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center text-gray-700">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <span class="text-sm">Prof. Marie Laurent</span>
+                        </div>
+                        
+                        <!-- Review Section -->
+                        <div class="pt-4 border-t border-gray-100 mt-4">
+                            <div class="flex flex-col space-y-3">
+                                <button onclick="openReviewModal(1)" class="w-full bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700 transition duration-150 text-sm font-medium flex items-center justify-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    Examiner
+                                </button>
+                                
+                                <div class="flex space-x-2">
+                                    <button class="flex-1 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-md hover:bg-emerald-100 transition duration-150 text-sm font-medium">
+                                        Approuver
+                                    </button>
+                                    <button class="flex-1 bg-rose-50 text-rose-700 px-4 py-2 rounded-md hover:bg-rose-100 transition duration-150 text-sm font-medium">
+                                        Rejeter
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <!-- Review Modal (Your existing modal code) -->
+    <div id="reviewModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+        <!-- Your existing modal content -->
     </div>
 
-    <!-- Modals for various actions would go here -->
+    <script>
+        function openReviewModal(id) {
+            document.getElementById('reviewModal').classList.remove('hidden');
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').classList.add('hidden');
+        }
+    </script>
 </body>
-</html>
+</html> 
