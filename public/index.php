@@ -19,7 +19,11 @@ $router->add('GET', '/logout', [AuthController::class, 'logout']);
 
 // Admin routes
 $router->add('GET', '/admin', [AdminController::class, 'adminView']);
-$router->add('GET', '/admin/users', [AdminController::class, 'users']);
+$router->add('GET', '/admin/users', [AdminController::class, 'usersView']);
+$router->add('GET', '/admin/calendar', [AdminController::class, 'calendarView']);
+$router->add('GET', '/admin/subjects', [AdminController::class, 'subjectsView']);
+
+
 $router->add('GET', '/admin/presentations', [AdminController::class, 'presentations']);
 
 $router->dispatch();

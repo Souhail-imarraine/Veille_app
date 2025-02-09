@@ -4,8 +4,12 @@ class BaseController
 {
     public function render($view, $data = []){
         extract($data);
-        include __DIR__ . '/../views/' . $view . '.php';
+        if($view == 'admin'){
+            include __DIR__ . '/../views/admin/' . $view . '.php';
+        }else{
+            include __DIR__ . '/../views/' . $view . '.php';
+        }
     }
    
-   
+
 }
