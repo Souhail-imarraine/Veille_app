@@ -37,10 +37,27 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="/login"
-                        class="bg-white text-primary-700 px-4 py-2 rounded-md hover:bg-primary-50 transition duration-150 text-sm font-semibold">Connexion</a>
-                    <a href="/register"
-                        class="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700 transition duration-150 text-sm font-semibold border border-white/20">Inscription</a>
+                    <?php if (Session::get('logged_in')): ?>
+                        <div class="flex items-center space-x-4">
+                            <span class="text-sm">Bienvenue, <?php echo htmlspecialchars(Session::get('name')); ?></span>
+                            <?php if (Session::get('role') === 'enseignant'): ?>
+                                <a href="/admin" class="px-3 py-2 text-sm font-medium hover:text-primary-100">Dashboard</a>
+                            <?php endif; ?>
+                            <a href="/logout" 
+                               class="bg-white text-primary-700 px-4 py-2 rounded-md hover:bg-primary-50 transition duration-150 text-sm font-semibold">
+                                Déconnexion
+                            </a>
+                        </div>
+                    <?php else: ?>
+                        <a href="/login"
+                            class="bg-white text-primary-700 px-4 py-2 rounded-md hover:bg-primary-50 transition duration-150 text-sm font-semibold">
+                            Connexion
+                        </a>
+                        <a href="/register"
+                            class="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700 transition duration-150 text-sm font-semibold border border-white/20">
+                            Inscription
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

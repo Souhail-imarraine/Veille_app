@@ -18,8 +18,6 @@ class AuthController extends BaseController {
             $password = htmlspecialchars($_POST['password']) ?? '';
             $role = 'etudiant';
 
-
-            // Basic validation
             if (empty($nom) || empty($prenom) || empty($email) || empty($password)) {
                 $this->render('register', ['error' => 'Tous les champs sont obligatoires']);
                 return;
@@ -29,7 +27,7 @@ class AuthController extends BaseController {
                 $this->render('register', ['error' => 'Cet email est déjà utilisé']);
                 return;
             }
-            
+
             if ($this->userModel->create($nom, $prenom, $email, $password, $role)) {
                 header('Location: /login');
                 exit;
@@ -43,26 +41,38 @@ class AuthController extends BaseController {
 
     public function login() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'] ?? '';
-            $password = $_POST['password'] ?? '';
+            $email = htmlspecialchars($_POST['email']) ?? '';
+            $password = htmlspecialchars($_POST['password']) ?? '';
+            
+            if (empty($email) || empty($password)) {
+                $this->render('login', ['error' => 'Veuillez remplir tous les champs']);
+                return;
+            }
+            
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $this->render('login', ['error' => 'Format d\'email invalide']);
+                return;
+            }
 
             $user = $this->userModel->verifyLogin($email, $password);
-            
-            if ($user) {
-                if ($user['statut'] !== 'approuvé') {
-                    $this->render('login', ['error' => 'Votre compte est en attente d\'approbation']);
-                    return;
-                }
 
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['user_role'] = $user['role'];
-                $_SESSION['user_nom'] = $user['nom'];
-                $_SESSION['user_prenom'] = $user['prenom'];
+            if ($user) {
+                Session::set('user_id', $user['id']);
+                Session::set('role', $user['role']);
+                Session::set('email', $user['email']);
+                Session::set('name', $user['nom'] . ' ' . $user['prenom']);
+                Session::set('logged_in', true);
                 
-                header('Location: /dashboard');
-                exit;
+                if ($user['role'] === 'enseignant') {
+                    header('Location: /admin');
+                } else {
+                    header('Location: /Home');
+                }
+                exit();
             } else {
+
                 $this->render('login', ['error' => 'Email ou mot de passe incorrect']);
+                return;
             }
         }
 
@@ -70,8 +80,8 @@ class AuthController extends BaseController {
     }
 
     public function logout() {
-        session_destroy();
-        header('Location: /');
-        exit;
+        Session::destroy();
+        header('Location: /login');
+        exit();
     }
 }

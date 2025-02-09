@@ -1,3 +1,10 @@
+<?php
+Session::init();
+if (!Session::isLoggedIn() || !Session::isAdmin()) {
+    header('Location: /login');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,16 +31,14 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <span class="text-sm">Admin: John Doe</span>
+                    <span class="text-sm">Bienvenue, <?php echo Session::get('name'); ?></span>
                     <a href="/logout" class="text-sm hover:text-blue-100">Déconnexion</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Header with Stats -->
         <div class="mb-8">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-blue-900">Gestion des Sujets</h2>

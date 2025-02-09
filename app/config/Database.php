@@ -1,16 +1,14 @@
 <?php
 
 class Database {
-    private static ?Database $instance = null;
+    private static ? Database $instance = null;
     private PDO $connection;
     
-    // Database configuration
     private string $host = "localhost";
     private string $dbname = "veillehub";
     private string $username = "root";
     private string $password = "";
 
-    // Private constructor to prevent direct instantiation
     private function __construct() {
         try {
             $dsn = "mysql:host={$this->host};dbname={$this->dbname};charset=utf8mb4";

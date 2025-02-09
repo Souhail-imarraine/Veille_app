@@ -1,5 +1,12 @@
+<?php
+Session::init();
+if (!Session::isLoggedIn()) {
+    header('Location: /login');
+    exit();
+}
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
@@ -8,26 +15,44 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-blue-50">
-    <!-- Admin Navigation -->
-    <nav class="bg-blue-700 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center space-x-4">
-                    <h1 class="text-xl font-bold">Admin Dashboard</h1>
-                    <div class="hidden md:flex space-x-4">
-                        <a href="/admin" class="px-3 py-2 text-sm font-medium hover:text-blue-100">Utilisateurs</a>
-                        <a href="/admin/calendar" class="px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-md">Calendrier</a>
-                        <a href="/admin/subjects" class="px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-md">Sujets</a>
-                    </div>
+<body class="bg-gray-100">
+    <!-- Calendar Header with User Info -->
+    <header class="bg-white shadow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-900">Calendrier</h1>
+            <div class="flex items-center space-x-4">
+                <div class="text-sm">
+                    <span class="text-gray-500">Bienvenue,</span>
+                    <span class="font-medium text-gray-900"><?php echo Session::get('name'); ?></span>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <span class="text-sm">Admin: John Doe</span>
-                    <a href="/logout" class="text-sm hover:text-blue-100">Déconnexion</a>
+                <div class="flex items-center space-x-2">
+                    <a href="/admin" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200">
+                        <i class="fas fa-tachometer-alt mr-2"></i>
+                        Dashboard
+                    </a>
+                    <a href="/logout" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700">
+                        <i class="fas fa-sign-out-alt mr-2"></i>
+                        Déconnexion
+                    </a>
                 </div>
             </div>
         </div>
-    </nav>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <nav class="flex space-x-4">
+            <a href="/admin" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-50">
+                Dashboard
+            </a>
+            <a href="/admin/calendar" class="px-3 py-2 rounded-md text-sm font-medium text-indigo-600 bg-indigo-50">
+                Calendrier
+            </a>
+            <a href="/admin/subjects" class="px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-50">
+                Sujets
+            </a>
+        </nav>
+    </div>
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -283,7 +308,6 @@
             </div>
         </div>
     </div>
-
     <script>
         function openScheduleModal() {
             document.getElementById('scheduleModal').classList.remove('hidden');

@@ -30,18 +30,28 @@ class User {
 
     public function verifyLogin(string $email, string $password): ?array {
         try {
-            $query = "SELECT * FROM utilisateurs WHERE email = :email AND statut = 'approuvé' LIMIT 1";
+            // First check if user exists regardless of status
+            $query = "SELECT * FROM utilisateurs WHERE email = :email LIMIT 1";
             $stmt = $this->db->prepare($query);
             $stmt->execute([':email' => $email]);
             
-            $user = $stmt->fetch();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            if ($user && password_verify($password, $user['mot_de_passe'])) {
-                unset($user['mot_de_passe']); // Don't return the password hash
-                return $user;
+            if (!$user) {
+                return null;
             }
+
+            if (!password_verify($password, $user['mot_de_passe'])) {
+                return null; 
+            }
+
+            if ($user['statut'] !== 'approuvé') {
+                return null; 
+            }
+
+            unset($user['mot_de_passe']);
+            return $user;
             
-            return null;
         } catch (PDOException $e) {
             error_log("Login verification error: " . $e->getMessage());
             return null;
@@ -75,28 +85,42 @@ class User {
             return false;
         }
     }
-
-    public function getTeachers(): array {
-        try {
-            $query = "SELECT * FROM utilisateurs WHERE role = 'enseignant' AND statut = 'approuvé'";
-            $stmt = $this->db->prepare($query);
-            $stmt->execute();
-            return $stmt->fetchAll();
-        } catch (PDOException $e) {
-            error_log("Get teachers error: " . $e->getMessage());
-            return [];
-        }
-    }
-
+    
     public function getStudents(): array {
         try {
-            $query = "SELECT * FROM utilisateurs WHERE role = 'etudiant' AND statut = 'approuvé'";
+            $query = "SELECT id, nom, prenom, email, statut, created_at FROM utilisateurs 
+                     WHERE role = 'etudiant' 
+                     ORDER BY created_at DESC";
             $stmt = $this->db->prepare($query);
             $stmt->execute();
-            return $stmt->fetchAll();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log("Get students error: " . $e->getMessage());
             return [];
         }
+    }
+
+    public function approveUser($userId) {
+        $sql = "UPDATE users SET statut = 'approuvé' WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$userId]);
+    }
+
+    public function rejectUser($userId) {
+        $sql = "UPDATE users SET statut = 'rejeté' WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$userId]);
+    }
+
+    public function blockUser($userId) {
+        $sql = "UPDATE users SET statut = 'bloqué' WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$userId]);
+    }
+
+    public function reactivateUser($userId) {
+        $sql = "UPDATE users SET statut = 'approuvé' WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$userId]);
     }
 }
